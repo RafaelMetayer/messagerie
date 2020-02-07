@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -49,6 +50,18 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Groupe", mappedBy="users_p")
      */
     private $groupes_p;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $photo;
+
+    private $file;
 
     public function __construct()
     {
@@ -216,5 +229,57 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(string $photo): self
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getFile(){
+        return $this -> file;
+    }
+    public function setFile(UploadedFile $file){
+        $this -> file = $file;
+        return $this;
+    }
+    public function uploadFile(){
+        $name = $this -> file -> getClientOriginalName();
+        $newName = $this -> renameFile($name);
+
+        $this -> photo = $newName;
+
+        $this -> file -> move($this -> dirPhoto(), $newName);
+    }
+    public function renameFile($name){
+        return 'photo_' . time() . '_' . rand(1, 99999) . '_' . $name;
+    }
+    public function dirPhoto(){
+        return __DIR__ . '/../../public/photo/';
+    }
+
+    public function removeFile(){
+        if(file_exists( $this -> dirPhoto() . $this -> image)) {
+            unlink($this -> dirPhoto() . $this -> image);
+        }
     }
 }
