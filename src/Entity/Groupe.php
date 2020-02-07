@@ -45,7 +45,7 @@ class Groupe
     private $users_p;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\message", mappedBy="groupe", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="groupe", orphanRemoval=true)
      */
     private $messages;
 
@@ -144,7 +144,7 @@ class Groupe
         return $this->messages;
     }
 
-    public function addMessage(message $message): self
+    public function addMessage(Message $message): self
     {
         if (!$this->messages->contains($message)) {
             $this->messages[] = $message;
@@ -154,7 +154,7 @@ class Groupe
         return $this;
     }
 
-    public function removeMessage(message $message): self
+    public function removeMessage(Message $message): self
     {
         if ($this->messages->contains($message)) {
             $this->messages->removeElement($message);

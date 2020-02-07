@@ -41,7 +41,7 @@ class User implements UserInterface
     private $groupes;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\message", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="user")
      */
     private $messages;
 
@@ -164,7 +164,7 @@ class User implements UserInterface
         return $this->messages;
     }
 
-    public function addMessage(message $message): self
+    public function addMessage(Message $message): self
     {
         if (!$this->messages->contains($message)) {
             $this->messages[] = $message;
@@ -174,7 +174,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function removeMessage(message $message): self
+    public function removeMessage(Message $message): self
     {
         if ($this->messages->contains($message)) {
             $this->messages->removeElement($message);
