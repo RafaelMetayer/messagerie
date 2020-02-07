@@ -16,7 +16,7 @@ class MessageController extends AbstractController
 
         $repositoryG = $this -> getDoctrine() -> getRepository(Groupe::class);
         $repositoryM = $this -> getDoctrine() -> getRepository(Message::class);
-        
+
         $groupes = $repositoryG -> findAll();
         $messages = $repositoryM -> findBy( ['groupe_id' => $id], ['date_time' => 'ASC']);
 
