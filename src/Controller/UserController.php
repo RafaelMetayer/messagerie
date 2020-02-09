@@ -11,6 +11,8 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Entity\Groupe;
+use App\Form\CreateGroupeType;
 
 class UserController extends AbstractController
 {
@@ -67,5 +69,33 @@ class UserController extends AbstractController
     public function logout()
     {
         return $this->redirectToRoute('login');
+    }
+
+    /**
+     * @Route("/AddGroupe", name="AddGroupe")
+     */
+    public function creationGroupe(Request $request){
+
+        $manager = $this -> getDoctrine() -> getManager();
+        $groupe = new Groupe;
+
+        $form = $this -> createForm(CreateGroupeType::class, $groupe);
+        $form -> handleRequest($request);
+
+        if($form -> isSubmitted() && $form -> isValid())
+        {
+            $manager -> persist($groupe);
+
+            $groupe -> setDate(new \DateTime('now'));
+            $groupe -> setUsersp($this -> getUser());
+
+            foreach($groupe -> getUsers() as $user){
+                $user -> addGroupe($groupe);
+            }
+            $manager -> flush();
+        }
+       return $this->render('groupes/groupe_form.html.twig', array(
+            'groupeForm' => $form -> createView()
+        ));
     }
 }

@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+    {% block css %}	<link rel="stylesheet" href="{{ asset('/css/base.css') }}" /> {% endblock %}
+    {% block title %} Groupes {% endblock %}
+
+    {% block content %}
+        <div class="container-fluid h-100">
+			<div class="row justify-content-center h-100">
+				<div class="col-md-4 col-xl-3 chat"><div class="card mb-sm-3 mb-md-0 contacts_card">
+					<div class="card-header">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								Groupes
+                                <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
+							<div class="action_menu">
+								<ul>
+									<li>
+										<a href="{{path('AddGroupe')}}"><i class="fas fa-plus"></i> Créer un groupe </a>  
+									</li>
+									<li>
+										<a href="{{path('logout')}}"><i class="fas fa-ban"></i> Se deconnecter </a>
+									</li>
+								</ul>
+							</div>
+							</div>
+						</div>
+					</div>
+					<div class="card-body contacts_body">
+						<ui class="contacts">
+							{% for g in groupes %}
+								<a href="{{ path( 'message', {id:g.id} ) }}">
+									<li class="active">
+										<div class="d-flex bd-highlight">
+											<div class="img_cont">
+												<img src="{{ asset('/photo/' ~ g.photo) }}" class="rounded-circle user_img">
+											</div>
+											<div class="user_info">
+												<span>{{g.nom}}</span>
+											</div>
+										</div>
+									</li>
+								</a>
+							{% endfor %}
+						</ui>
+					</div>
+                </div>
+			</div>
+		</div>
+
+    {% endblock %}
+    {% block js %}<script src="{{ asset('/js/base.js') }}" ></script>{% endblock %}

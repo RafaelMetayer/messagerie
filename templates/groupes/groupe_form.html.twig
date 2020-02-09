@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+
+<head>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+
+
+
+{{ form_start(groupeForm) }}
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div class="card card-signin my-5">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Nouveau Groupe</h5>
+                        <form class="form-signin">
+                            <div class="form-label-group">
+                                {{ form_row(groupeForm.nom, {'attr' : {
+                                    'class': 'form-control'
+                                }}) }}
+                                {{ form_widget(groupeForm.nom, { 'attr' : {
+                                    'class' : 'form-control'
+                                }})}}
+                            </div>
+                            <div class="form-label-group">
+                                {{ form_row(groupeForm.users, { 'attr' : {
+                                    'class' : 'form-control'
+                                    
+                                    } }   )}}
+                            </div>
+                            <div class="form-group">
+
+                                {{ form_row(groupeForm.file, {'attr' : {
+                                    'class':''
+                                }}) }}
+
+                            </div>
+                            <hr class="my-4">
+                            <div class="form-label-group">
+                            {{ form_row(groupeForm.Creer, {'attr' : {
+                                'class': 'btn btn-lg btn-primary btn-block text-uppercase'
+                            }}) }}
+                            </div>
+                            {{ form_end(groupeForm) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

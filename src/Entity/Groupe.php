@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\GroupeRepository")
  */
@@ -28,6 +29,8 @@ class Groupe
      */
     private $photo;
 
+    private $file;
+
     /**
      * @ORM\Column(type="datetime")
      */
@@ -39,13 +42,13 @@ class Groupe
     private $users;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\user", inversedBy="groupes_p")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="groupes_p")
      * @ORM\JoinColumn(nullable=false)
      */
     private $users_p;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\message", mappedBy="groupe", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="groupe", orphanRemoval=true)
      */
     private $messages;
 
@@ -144,7 +147,7 @@ class Groupe
         return $this->messages;
     }
 
-    public function addMessage(message $message): self
+    public function addMessage(Message $message): self
     {
         if (!$this->messages->contains($message)) {
             $this->messages[] = $message;
@@ -154,7 +157,7 @@ class Groupe
         return $this;
     }
 
-    public function removeMessage(message $message): self
+    public function removeMessage(Message $message): self
     {
         if ($this->messages->contains($message)) {
             $this->messages->removeElement($message);
@@ -165,5 +168,32 @@ class Groupe
         }
 
         return $this;
+    }
+    public function getFile(){
+        return $this->file;
+    }
+    public function setFile(UploadedFile $file){
+        $this->file = $file;
+        return $this;
+    }
+    public function uploadFile(){
+        $name = $this -> file -> getClientOriginalName();
+        $newName = $this -> renameFile($name);
+
+        $this->photo = $newName;
+
+        $this->file -> move($this -> dirPhoto(), $newName);
+    }
+    public function renameFile($name){
+        return 'photo_' . time() . '_' . rand(1, 99999) . '_' . $name;
+    }
+    public function dirPhoto(){
+        return __DIR__ . '/../../public/photo/';
+    }
+
+    public function removeFile(){
+        if(file_exists( $this -> dirPhoto() . $this->image)) {
+            unlink($this -> dirPhoto() . $this->image);
+        }
     }
 }

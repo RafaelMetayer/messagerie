@@ -19,7 +19,7 @@ security:
 
             form_login:
                 login_path: 'login'
-                default_target_path: 'mesconversations'
+                default_target_path: 'groupe'
                 check_path: 'login_check'
 
             logout:
